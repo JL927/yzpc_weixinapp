@@ -1,0 +1,30 @@
+package com.yzpc.yzpc_weixinapp.service.impl;
+
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.yzpc.yzpc_weixinapp.entity.Student;
+import com.yzpc.yzpc_weixinapp.service.StudentService;
+import com.yzpc.yzpc_weixinapp.mapper.StudentMapper;
+import org.springframework.stereotype.Service;
+
+import java.util.Arrays;
+
+/**
+* @author wq
+* @description 针对表【student】的数据库操作Service实现
+* @createDate 2024-12-20 16:59:59
+*/
+@Service
+public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student>
+    implements StudentService{
+
+    @Override
+    public boolean addStudents(Student[] stds) {
+
+        this.baseMapper.insert(Arrays.asList(stds));
+        return true;
+    }
+}
+
+
+
+

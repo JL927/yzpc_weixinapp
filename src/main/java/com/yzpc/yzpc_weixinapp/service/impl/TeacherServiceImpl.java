@@ -8,6 +8,8 @@ import com.yzpc.yzpc_weixinapp.mapper.TeacherMapper;
 import com.yzpc.yzpc_weixinapp.service.TeacherService;
 import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
+
 /**
  * @author wq
  * @description
@@ -17,12 +19,12 @@ import org.springframework.stereotype.Service;
 public class TeacherServiceImpl extends ServiceImpl<TeacherMapper,Teacher> implements TeacherService {
 
     @Override
-    public Teacher login(String username, String password) {
+    public Teacher login(String username, String password,String role) {
         if (StrUtil.hasBlank(username,password))
             throw new RuntimeException("用户名或密码为空");
 
         QueryWrapper<Teacher> wrapper = new QueryWrapper<>();
-        wrapper.eq("username",username).eq("password",password);
+        wrapper.eq("username",username).eq("password",password).eq("role",role);
 
         Teacher teacher= this.baseMapper.selectOne(wrapper);
 
@@ -31,4 +33,16 @@ public class TeacherServiceImpl extends ServiceImpl<TeacherMapper,Teacher> imple
 
         return teacher;
     }
+
+    @Override
+    public void addTeachers(Teacher[] teachers) {
+        this.baseMapper.insert(Arrays.asList(teachers));
+    }
+
+    @Override
+    public void deleteTeachers(Integer[] ids) {
+        this.baseMapper.deleteByIds(Arrays.asList(ids));
+    }
+
+    ;
 }

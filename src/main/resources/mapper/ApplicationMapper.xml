@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yzpc.yzpc_weixinapp.mapper.ApplicationMapper">
+
+    <resultMap id="BaseResultMap" type="com.yzpc.yzpc_weixinapp.entity.Application">
+            <id property="id" column="id" jdbcType="BIGINT"/>
+            <result property="studentId" column="student_id" jdbcType="BIGINT"/>
+            <result property="applicationType" column="application_type" jdbcType="VARCHAR"/>
+            <result property="status" column="status" jdbcType="TINYINT"/>
+            <result property="description" column="description" jdbcType="VARCHAR"/>
+            <result property="score" column="score" jdbcType="TINYINT"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,student_id,application_type,
+        status,description,score
+    </sql>
+</mapper>

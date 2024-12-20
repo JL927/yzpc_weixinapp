@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yzpc.yzpc_weixinapp.mapper.StudentMapper">
+
+    <resultMap id="BaseResultMap" type="com.yzpc.yzpc_weixinapp.entity.Student">
+            <id property="id" column="id" jdbcType="BIGINT"/>
+            <result property="name" column="name" jdbcType="VARCHAR"/>
+            <result property="username" column="username" jdbcType="VARCHAR"/>
+            <result property="password" column="password" jdbcType="VARCHAR"/>
+            <result property="teacherId" column="teacher_id" jdbcType="INTEGER"/>
+            <result property="classId" column="class_id" jdbcType="INTEGER"/>
+            <result property="majorId" column="major_id" jdbcType="TINYINT"/>
+            <result property="computerScore" column="computer_score" jdbcType="TINYINT"/>
+            <result property="skillScore" column="skill_score" jdbcType="TINYINT"/>
+            <result property="englishScore" column="english_score" jdbcType="TINYINT"/>
+            <result property="chineseScore" column="chinese_score" jdbcType="TINYINT"/>
+            <result property="totalScore" column="total_score" jdbcType="TINYINT"/>
+            <result property="satisfied" column="satisfied" jdbcType="TINYINT"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,name,username,
+        password,teacher_id,class_id,
+        major_id,computer_score,skill_score,
+        english_score,chinese_score,total_score,
+        satisfied
+    </sql>
+</mapper>

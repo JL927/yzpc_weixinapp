@@ -11,5 +11,9 @@ import org.springframework.stereotype.Service;
 @Service
 public interface TeacherService {
 
-    Teacher login(String username, String password);
+    Teacher login(String username, String password,String role);
+
+    void addTeachers(Teacher[] teachers);
+
+    void deleteTeachers(Integer[] ids);
 }
