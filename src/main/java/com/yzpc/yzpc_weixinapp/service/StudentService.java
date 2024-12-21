@@ -10,5 +10,8 @@ import com.baomidou.mybatisplus.extension.service.IService;
 */
 public interface StudentService extends IService<Student> {
 
-    boolean addStudents(Student[] stds);
+    void addStudents(Student[] stds);
+
+    Student login(String username, String password);
+
 }

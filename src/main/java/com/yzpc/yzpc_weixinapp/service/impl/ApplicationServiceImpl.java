@@ -15,6 +15,10 @@ import org.springframework.stereotype.Service;
 public class ApplicationServiceImpl extends ServiceImpl<ApplicationMapper, Application>
     implements ApplicationService{
 
+    @Override
+    public void addApplication(Application application) {
+        this.baseMapper.insert(application);
+    }
 }
 
 

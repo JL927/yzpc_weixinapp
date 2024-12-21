@@ -24,12 +24,13 @@ public enum ApplicationTypes {
     }
 
     // 反向查找
-    public static Role fromValue(String value) {
-        for (Role role : Role.values()) {
-            if (role.getValue().equalsIgnoreCase(value)) {
-                return role;
+    public static ApplicationTypes fromValue(String value) {
+        for (ApplicationTypes applicationType : ApplicationTypes.values()) {
+            if (applicationType.getValue().equalsIgnoreCase(value)) {
+                return applicationType;
             }
         }
-        throw new IllegalArgumentException("Unknown status: " + value);
+        return null;
+//        throw new IllegalArgumentException("Unknown status: " + value);
     }
 }

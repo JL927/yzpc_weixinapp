@@ -1,7 +1,11 @@
 package com.yzpc.yzpc_weixinapp.service.impl;
 
+import cn.hutool.core.util.StrUtil;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.yzpc.yzpc_weixinapp.entity.Student;
+import com.yzpc.yzpc_weixinapp.exception.BusinessException;
+import com.yzpc.yzpc_weixinapp.exception.ErrorCode;
 import com.yzpc.yzpc_weixinapp.service.StudentService;
 import com.yzpc.yzpc_weixinapp.mapper.StudentMapper;
 import org.springframework.stereotype.Service;
@@ -18,11 +22,29 @@ public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student>
     implements StudentService{
 
     @Override
-    public boolean addStudents(Student[] stds) {
+    public void addStudents(Student[] stds) {
 
         this.baseMapper.insert(Arrays.asList(stds));
-        return true;
     }
+
+    @Override
+    public Student login(String username, String password) {
+        if (StrUtil.hasBlank(username,password))
+            throw new BusinessException(ErrorCode.PARAMS_ERROR,"用户名或密码为空");
+
+        QueryWrapper<Student> queryWrapper =new QueryWrapper<>();
+        queryWrapper.eq("username",username);
+        queryWrapper.eq("password",password);
+
+        Student student = this.baseMapper.selectOne(queryWrapper);
+
+        if (student==null)
+            throw new BusinessException(ErrorCode.PARAMS_ERROR,"用户不存在或者密码错误");
+
+        return student;
+
+    }
+
 }
 
 

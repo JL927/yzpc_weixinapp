@@ -28,7 +28,7 @@ public class Application implements Serializable {
     /**
      * 
      */
-    private Object applicationType;
+    private String applicationType;
 
     /**
      * 

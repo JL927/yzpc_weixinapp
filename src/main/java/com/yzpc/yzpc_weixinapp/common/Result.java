@@ -1,5 +1,6 @@
 package com.yzpc.yzpc_weixinapp.common;
 
+import com.yzpc.yzpc_weixinapp.exception.ErrorCode;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -32,6 +33,10 @@ public class Result{
     }
     public static Result error(String msg){
         return new Result(0,null,msg);
+    }
+
+    public static Result error(int errorCode, String msg) {
+        return new Result(errorCode,null,msg);
     }
 
     @Override
