@@ -36,7 +36,7 @@ public class ApplicationController {
             return Result.error("请求种类错误");
         }else {
             applicationService.addApplication(application);
-            return Result.success();
+            return Result.success(application);
         }
 
     }

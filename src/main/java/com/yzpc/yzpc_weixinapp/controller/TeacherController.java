@@ -42,7 +42,7 @@ public class TeacherController {
     }
 
     /**
-     * 添加单个或多个教职工，输入账号，密码，职位
+     * 添加单个或多个教职工，输入姓名，账号，密码，职位
      * @param teachers
      * @return
      */
