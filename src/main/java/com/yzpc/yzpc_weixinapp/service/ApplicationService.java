@@ -3,6 +3,8 @@ package com.yzpc.yzpc_weixinapp.service;
 import com.yzpc.yzpc_weixinapp.entity.Application;
 import com.baomidou.mybatisplus.extension.service.IService;
 
+import java.util.List;
+
 /**
 * @author wq
 * @description 针对表【application】的数据库操作Service
@@ -11,4 +13,10 @@ import com.baomidou.mybatisplus.extension.service.IService;
 public interface ApplicationService extends IService<Application> {
 
     void addApplication(Application application);
+
+    List<Application> getApplicationsById(Integer studentId);
+
+    List<Application> getApplicationsByStatus(Integer status);
+
+    void changeApplication(Application application);
 }

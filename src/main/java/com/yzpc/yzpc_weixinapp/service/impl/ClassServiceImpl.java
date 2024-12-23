@@ -31,6 +31,15 @@ public class ClassServiceImpl extends ServiceImpl<ClassMapper, Class>
     }
 
     @Override
+    public int deleteClassByTeacherId(Integer teacherId) {
+
+        QueryWrapper<Class> wrapper =new QueryWrapper<>();
+        wrapper.eq("teacher_id",teacherId);
+
+        return this.baseMapper.delete(wrapper);
+    }
+
+    @Override
     public List<Class> findClassesByTeacherId(Integer teacherId) {
         QueryWrapper<Class> wrapper = new QueryWrapper<>();
 //        wrapper.select("id");

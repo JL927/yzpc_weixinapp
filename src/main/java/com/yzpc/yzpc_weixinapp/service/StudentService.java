@@ -12,6 +12,8 @@ public interface StudentService extends IService<Student> {
 
     void addStudents(Student[] stds);
 
+    int deleteStudentsByTeacherId(Integer teacherId);
+
     Student login(String username, String password);
 
 }

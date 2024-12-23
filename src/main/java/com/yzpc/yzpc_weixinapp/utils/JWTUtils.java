@@ -1,5 +1,6 @@
 package com.yzpc.yzpc_weixinapp.utils;
 
+import com.yzpc.yzpc_weixinapp.entity.enums.Role;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
@@ -53,5 +54,15 @@ public class JWTUtils {
 
 
         return claims;
+    }
+
+    public static boolean checkIsTeacher(Claims claims){
+        if (claims.containsKey("role")) {
+            String role = (String) claims.get("role");
+            return Role.isRole(role);
+        }
+
+        return false;
+
     }
 }

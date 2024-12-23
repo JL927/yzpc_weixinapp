@@ -17,6 +17,7 @@ public interface ClassService extends IService<Class> {
     void addClass(Class newClass);
 
     int deleteClass(Integer classId);
+    int deleteClassByTeacherId(Integer teacherId);
 
     List<Class> findClassesByTeacherId(Integer id);
 }

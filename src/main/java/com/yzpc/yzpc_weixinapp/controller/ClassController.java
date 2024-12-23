@@ -19,6 +19,13 @@ public class ClassController {
     @Resource
     public ClassService classService;
 
+    /**
+     * 添加班级
+     * @param name 班级名称
+     * @param teacherId 教师id
+     * @param majorId 专业id
+     * @return
+     */
     @PostMapping("/class/add") //  "/class/add?name=旅游一班&teacherId=1&majorId=1"
     public Result addClass(@RequestParam(name = "name") String name,
                            @RequestParam(name = "teacherId") Integer teacherId,
@@ -44,9 +51,9 @@ public class ClassController {
     }
 
     /**
-     * 查询一个老师下有多少班级，输入老师id
-     * @param id
-     * @return
+     * 查询一个老师名下的所有班级，输入老师id
+     * @param id 老师id
+     * @return 所有班级
      */
     @GetMapping("/class/getByTeacherId")
     public Result getByTeacherId(@RequestParam(name = "teacherId") Integer id){

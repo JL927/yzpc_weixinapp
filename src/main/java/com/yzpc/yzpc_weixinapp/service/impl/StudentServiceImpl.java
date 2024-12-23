@@ -3,6 +3,7 @@ package com.yzpc.yzpc_weixinapp.service.impl;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.yzpc.yzpc_weixinapp.entity.Class;
 import com.yzpc.yzpc_weixinapp.entity.Student;
 import com.yzpc.yzpc_weixinapp.exception.BusinessException;
 import com.yzpc.yzpc_weixinapp.exception.ErrorCode;
@@ -25,6 +26,14 @@ public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student>
     public void addStudents(Student[] stds) {
 
         this.baseMapper.insert(Arrays.asList(stds));
+    }
+
+    @Override
+    public int deleteStudentsByTeacherId(Integer teacherId) {
+        QueryWrapper<Student> wrapper =new QueryWrapper<>();
+        wrapper.eq("teacher_id",teacherId);
+
+        return this.baseMapper.delete(wrapper);
     }
 
     @Override

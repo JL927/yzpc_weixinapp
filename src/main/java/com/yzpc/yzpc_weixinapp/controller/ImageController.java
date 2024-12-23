@@ -34,18 +34,18 @@ public class ImageController {
 
     /**
      * 图片批量上传
-     * 输入图片数据，申请id
+     * 输入图片数据，存储路径
      * @param multipartFiles 多张图片
      * @return
      */
-    @PostMapping("/img/upload")  //  " /img/upload?applicationId=1  "
+    @PostMapping("/img/upload")  //  " /img/upload?path=1  "
     public Result uploadImg(@RequestPart("file") List<MultipartFile> multipartFiles,
-                                 @RequestParam(name = "applicationId") Integer applicationId) {
+                                 @RequestParam(name = "path") String path) {
 
         for(MultipartFile multipartFile: multipartFiles){
             // 文件目录
             String filename = multipartFile.getOriginalFilename();
-            String filepath = String.format("/%d/%s", applicationId,filename);
+            String filepath = String.format("/%s/%s", path,filename);
             File file = null;
             try {
                 // 上传文件
@@ -76,7 +76,7 @@ public class ImageController {
      * @param prefix 文件夹名
      * @return 图片名列表
      */
-    @GetMapping("/img/getImgList")// " /img/getImgList?key='text/' "
+    @GetMapping("/img/getImgList")// " /img/getImgList?key='test/' "
     public Result getImgList(@RequestParam(name = "prefix") String prefix){
         List<String> keys = cosManager.listAllImagesInFolder(prefix);
         return Result.success(keys);
@@ -96,7 +96,7 @@ public class ImageController {
      * @param key 图片路径
      * @return
      */
-    @DeleteMapping("/img/deleteImg") // " /img/deleteImg?key='/text/a.jpg' "
+    @DeleteMapping("/img/deleteImg") // " /img/deleteImg?key='/test/a.jpg' "
     public Result deleteImg(@RequestParam(name = "key") String key){
         try {
             cosManager.deleteObject(key);

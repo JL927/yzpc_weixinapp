@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>上传多张图片</title>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+</head>
+
+<body>
+<input type="file" id="pictures" multiple>
+<input type="number" id="applicationId" placeholder="请输入applicationId" required>
+<button onclick="uploadPictures()">上传图片</button>
+<div id="result"></div>
+<script>
+    function uploadPictures() {
+        const applicationId = document.getElementById('applicationId').value;
+        const files = document.getElementById('pictures').files;
+        const formData = new FormData();
+        for (let i = 0; i < files.length; i++) {
+            formData.append('file', files[i]);
+        }
+        axios.post(`http://localhost:8222/api/img/upload?applicationId=${applicationId}`, formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            }
+        }).then(response => {
+            const resultDiv = document.getElementById('result');
+            resultDiv.innerHTML = '<p>图片上传成功</p>';
+            console.log(response.data);
+        }).catch(error => {
+            const resultDiv = document.getElementById('result');
+            resultDiv.innerHTML = `<p>图片上传失败: ${error.message}</p>`;
+            console.error(error);
+        });
+    }
+</script>
+</body>
+
+</html>

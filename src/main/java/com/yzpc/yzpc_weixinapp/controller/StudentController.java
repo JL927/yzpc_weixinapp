@@ -3,6 +3,7 @@ package com.yzpc.yzpc_weixinapp.controller;
 import com.yzpc.yzpc_weixinapp.common.Result;
 import com.yzpc.yzpc_weixinapp.entity.Application;
 import com.yzpc.yzpc_weixinapp.entity.Student;
+import com.yzpc.yzpc_weixinapp.entity.StudentLogin;
 import com.yzpc.yzpc_weixinapp.entity.UserLogin;
 import com.yzpc.yzpc_weixinapp.service.StudentService;
 import com.yzpc.yzpc_weixinapp.utils.JWTUtils;
@@ -51,8 +52,9 @@ public class StudentController {
 
         HashMap<String,Object> data = new HashMap<>();
         data.put("data",student);
+        data.put("role","student");
 
-        return Result.success(JWTUtils.generateJWT(data));
+        return Result.success(StudentLogin.getStudentV0(student,JWTUtils.generateJWT(data)));
     }
 
 
