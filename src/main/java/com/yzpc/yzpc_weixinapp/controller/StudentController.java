@@ -7,13 +7,11 @@ import com.yzpc.yzpc_weixinapp.entity.StudentLogin;
 import com.yzpc.yzpc_weixinapp.entity.UserLogin;
 import com.yzpc.yzpc_weixinapp.service.StudentService;
 import com.yzpc.yzpc_weixinapp.utils.JWTUtils;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.util.HashMap;
+import java.util.List;
 
 /**
  * @author wq
@@ -56,6 +54,22 @@ public class StudentController {
 
         return Result.success(StudentLogin.getStudentV0(student,JWTUtils.generateJWT(data)));
     }
+
+
+    /**
+     * 检查学生成绩是否达标，需要手动调用此接口才会更新满足字段
+     * @param ids 学生id列表
+     * @return
+     */
+    @PutMapping("/student/checkSatisfied")
+    public Result checkSatisfied(@RequestBody List<Long> ids){
+        int sum = 0;
+        for (Long id:ids)
+            sum += studentService.updateSatisfied(id);
+
+        return Result.success("成功修改"+sum+"条数据");
+    }
+
 
 
 

@@ -1,6 +1,6 @@
-create table yzpc_wxapp.teacher
+create table teacher
 (
-    id       int auto_increment
+    id       int unsigned auto_increment
         primary key,
     name     varchar(30)                                       not null,
     username varchar(50)                                       not null,

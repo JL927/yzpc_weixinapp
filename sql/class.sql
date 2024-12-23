@@ -1,6 +1,6 @@
-create table yzpc_wxapp.class
+create table class
 (
-    id         int auto_increment
+    id         int unsigned auto_increment
         primary key,
     name       varchar(40) not null,
     major_id   tinyint     not null,

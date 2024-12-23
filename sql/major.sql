@@ -1,4 +1,4 @@
-create table yzpc_wxapp.major
+create table major
 (
     id             tinyint      not null
         primary key,

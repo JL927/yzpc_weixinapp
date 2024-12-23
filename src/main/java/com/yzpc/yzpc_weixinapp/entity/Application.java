@@ -45,6 +45,8 @@ public class Application implements Serializable {
      */
     private Integer score;
 
+    private String name;
+
     @TableField(exist = false)
     private static final long serialVersionUID = 6L;
 
@@ -65,7 +67,8 @@ public class Application implements Serializable {
             && (this.getApplicationType() == null ? other.getApplicationType() == null : this.getApplicationType().equals(other.getApplicationType()))
             && (this.getStatus() == null ? other.getStatus() == null : this.getStatus().equals(other.getStatus()))
             && (this.getDescription() == null ? other.getDescription() == null : this.getDescription().equals(other.getDescription()))
-            && (this.getScore() == null ? other.getScore() == null : this.getScore().equals(other.getScore()));
+            && (this.getScore() == null ? other.getScore() == null : this.getScore().equals(other.getScore()))
+            && (this.getName() == null ? other.getName() == null : this.getName().equals(other.getName()));
     }
 
     @Override
@@ -78,6 +81,7 @@ public class Application implements Serializable {
         result = prime * result + ((getStatus() == null) ? 0 : getStatus().hashCode());
         result = prime * result + ((getDescription() == null) ? 0 : getDescription().hashCode());
         result = prime * result + ((getScore() == null) ? 0 : getScore().hashCode());
+        result = prime * result + ((getName() == null) ? 0 : getName().hashCode());
         return result;
     }
 
@@ -93,6 +97,7 @@ public class Application implements Serializable {
         sb.append(", status=").append(status);
         sb.append(", description=").append(description);
         sb.append(", score=").append(score);
+        sb.append(", name=").append(name);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();

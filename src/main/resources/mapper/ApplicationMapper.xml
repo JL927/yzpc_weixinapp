@@ -11,10 +11,11 @@
             <result property="status" column="status" jdbcType="TINYINT"/>
             <result property="description" column="description" jdbcType="VARCHAR"/>
             <result property="score" column="score" jdbcType="TINYINT"/>
+            <result property="name" column="name" jdbcType="VARCHAR"/>
     </resultMap>
 
     <sql id="Base_Column_List">
         id,student_id,application_type,
-        status,description,score
+        status,description,score,name
     </sql>
 </mapper>

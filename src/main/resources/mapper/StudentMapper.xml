@@ -27,4 +27,9 @@
         english_score,chinese_score,total_score,
         satisfied
     </sql>
+
+    <select id="getSumOfScore" resultType="java.lang.Integer">
+        select computer_score+english_score+chinese_score+skill_score  from student where id=#{id};
+
+    </select>
 </mapper>

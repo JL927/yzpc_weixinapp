@@ -14,6 +14,13 @@ public interface StudentService extends IService<Student> {
 
     int deleteStudentsByTeacherId(Integer teacherId);
 
+    //更新不同种类申请得分
+    int updateScore(Long studentId,String index,Integer score);
+    //更新总分
+    int updateTotalScore(Long studentId);
+    //更新是否合格
+    int updateSatisfied(Long studentId);
+
     Student login(String username, String password);
 
 }

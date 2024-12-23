@@ -4,9 +4,13 @@ import com.yzpc.yzpc_weixinapp.common.Result;
 import com.yzpc.yzpc_weixinapp.entity.Application;
 import com.yzpc.yzpc_weixinapp.entity.enums.ApplicationTypes;
 import com.yzpc.yzpc_weixinapp.service.ApplicationService;
+import com.yzpc.yzpc_weixinapp.service.StudentService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -16,10 +20,14 @@ import java.util.List;
  */
 @CrossOrigin
 @RestController
+@Slf4j
 public class ApplicationController {
 
     @Resource
     public ApplicationService applicationService;
+
+    @Resource
+    public StudentService studentService;
 
     /**
      * 新增请求，输入学生id，请求种类（'computer', 'skill', 'english', 'chinese'）
@@ -75,9 +83,38 @@ public class ApplicationController {
     public Result changeStatus(@RequestBody Application application){
         if(ApplicationTypes.fromValue(application.getApplicationType()) == null)
             return Result.error("请求种类错误");
+        if(!Arrays.asList(0,1,2,3,4).contains(application.getStatus()))
+            return Result.error("申请状态错误");
 
 
         applicationService.changeApplication(application);
+
+        //最终审核完成，添加分数
+        if(application.getStatus()==4){
+            String applicationType = application.getApplicationType();
+            Integer score = application.getScore();
+            Long studentId = application.getStudentId();
+            int changes=0;
+            switch (ApplicationTypes.fromValue(applicationType)){
+                case SKILL:
+                    changes=studentService.updateScore(studentId,"skill_score",score);
+                    break;
+                case CHINESE:
+                    changes=studentService.updateScore(studentId,"chinese_score",score);
+                    break;
+                case ENGLISH:
+                    changes=studentService.updateScore(studentId,"english_score",score);
+                    break;
+                case COMPUTER:
+                    changes=studentService.updateScore(studentId,"computer_score",score);
+                    break;
+                default:
+                    log.info("添加分数种类出错");
+            }
+            int changes2=studentService.updateTotalScore(studentId);
+            log.info("修改"+changes+"行分数和"+changes2+"行总分。");
+
+        }
 
         return Result.success();
     }

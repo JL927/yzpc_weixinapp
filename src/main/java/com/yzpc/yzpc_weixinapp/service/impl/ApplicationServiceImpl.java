@@ -1,13 +1,17 @@
 package com.yzpc.yzpc_weixinapp.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.yzpc.yzpc_weixinapp.entity.Application;
+import com.yzpc.yzpc_weixinapp.exception.BusinessException;
+import com.yzpc.yzpc_weixinapp.exception.ErrorCode;
 import com.yzpc.yzpc_weixinapp.service.ApplicationService;
 import com.yzpc.yzpc_weixinapp.mapper.ApplicationMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 
 /**
 * @author wq
@@ -44,7 +48,23 @@ public class ApplicationServiceImpl extends ServiceImpl<ApplicationMapper, Appli
 
     @Override
     public void changeApplication(Application application) {
-
+        if (Objects.nonNull(application) && Objects.nonNull(application.getId())) {
+            UpdateWrapper<Application> updateWrapper = new UpdateWrapper<>();
+            updateWrapper.eq("id", application.getId());
+            long count = this.baseMapper.selectCount(updateWrapper);
+            if (count > 0) {
+                updateWrapper.set("status", application.getStatus());
+                updateWrapper.set("description", application.getDescription());
+                updateWrapper.set("score", application.getScore());
+                // 使用条件构造器进行更新
+                this.baseMapper.update(null, updateWrapper);
+            } else {
+                throw new BusinessException(ErrorCode.NOT_FOUND_ERROR,
+                        "不存在id为 " + application.getId() + " 的请求，无法修改");
+            }
+        }else {
+            throw new BusinessException(ErrorCode.PARAMS_ERROR,"请求参数为空");
+        }
     }
 }
 
