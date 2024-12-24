@@ -56,6 +56,7 @@ public class ApplicationServiceImpl extends ServiceImpl<ApplicationMapper, Appli
                 updateWrapper.set("status", application.getStatus());
                 updateWrapper.set("description", application.getDescription());
                 updateWrapper.set("score", application.getScore());
+                updateWrapper.set("name", application.getName());
                 // 使用条件构造器进行更新
                 this.baseMapper.update(null, updateWrapper);
             } else {
