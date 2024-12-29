@@ -3,6 +3,8 @@ package com.yzpc.yzpc_weixinapp.service;
 import com.yzpc.yzpc_weixinapp.entity.Student;
 import com.baomidou.mybatisplus.extension.service.IService;
 
+import java.util.List;
+
 /**
 * @author wq
 * @description 针对表【student】的数据库操作Service
@@ -22,5 +24,7 @@ public interface StudentService extends IService<Student> {
     int updateSatisfied(Long studentId);
 
     Student login(String username, String password);
+
+    List<Student> getStudentsByClass(Integer classId);
 
 }

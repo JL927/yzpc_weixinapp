@@ -3,6 +3,8 @@ package com.yzpc.yzpc_weixinapp.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.yzpc.yzpc_weixinapp.entity.Class;
+import com.yzpc.yzpc_weixinapp.exception.BusinessException;
+import com.yzpc.yzpc_weixinapp.exception.ErrorCode;
 import com.yzpc.yzpc_weixinapp.service.ClassService;
 import com.yzpc.yzpc_weixinapp.mapper.ClassMapper;
 import org.springframework.stereotype.Service;
@@ -50,7 +52,25 @@ public class ClassServiceImpl extends ServiceImpl<ClassMapper, Class>
 //                .map(id -> (Integer) id)
 //                .collect(Collectors.toList());
 
-        return this.baseMapper.selectList(wrapper);
+        List<Class> classes = this.baseMapper.selectList(wrapper);
+        if (classes.isEmpty())
+            throw new BusinessException(ErrorCode.NOT_FOUND_ERROR,"老师id错误或不存在此老师的班级");
+
+        return classes;
+
+    }
+
+    @Override
+    public List<Class> findClassesByMajorId(Integer majorId) {
+        QueryWrapper<Class> wrapper = new QueryWrapper<>();
+        wrapper.eq("major_id",majorId);
+        List<Class> classes = this.baseMapper.selectList(wrapper);
+        if (classes.isEmpty())
+            throw new BusinessException(ErrorCode.NOT_FOUND_ERROR,"专业id错误或不存在此专业的班级");
+
+        return classes;
+
+
     }
 }
 

@@ -5,6 +5,7 @@ import com.yzpc.yzpc_weixinapp.entity.Application;
 import com.yzpc.yzpc_weixinapp.entity.Student;
 import com.yzpc.yzpc_weixinapp.entity.StudentLogin;
 import com.yzpc.yzpc_weixinapp.entity.UserLogin;
+import com.yzpc.yzpc_weixinapp.exception.ErrorCode;
 import com.yzpc.yzpc_weixinapp.service.StudentService;
 import com.yzpc.yzpc_weixinapp.utils.JWTUtils;
 import org.springframework.web.bind.annotation.*;
@@ -55,6 +56,30 @@ public class StudentController {
         return Result.success(StudentLogin.getStudentV0(student,JWTUtils.generateJWT(data)));
     }
 
+    /**
+     * 获取班级学生
+     * @param classId 班级id
+     * @return
+     */
+    @GetMapping("/student/getByClass")
+    public Result getStudentsByClass(@RequestParam(name = "classId") Integer classId){
+        List<Student> students = studentService.getStudentsByClass(classId);
+
+        return Result.success(students);
+    }
+
+    /**
+     * 获取所有学生
+     * @return
+     */
+    @GetMapping("/student/getAll")
+    public Result getStudentsAll(){
+        List<Student> students = studentService.list();
+        if (students.isEmpty())
+            return Result.error(ErrorCode.NOT_FOUND_ERROR,"数据不存在");
+        return Result.success(students);
+
+    }
 
     /**
      * 检查学生成绩是否达标，需要手动调用此接口才会更新满足字段

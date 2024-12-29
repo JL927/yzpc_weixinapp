@@ -13,6 +13,7 @@ import com.yzpc.yzpc_weixinapp.mapper.StudentMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
+import java.util.List;
 
 /**
 * @author wq
@@ -39,9 +40,15 @@ public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student>
 
     @Override
     public int updateScore(Long studentId, String index, Integer score) {
+        QueryWrapper<Student> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("id",studentId);
+        queryWrapper.select(index);
+
+        Integer originScore = (Integer)this.getMap(queryWrapper).get(index);
+
         UpdateWrapper<Student> updateWrapper = new UpdateWrapper<>();
         updateWrapper.eq("id",studentId);
-        updateWrapper.set(index,score);
+        updateWrapper.set(index,score+originScore);
 
         return this.baseMapper.update(updateWrapper);
     }
@@ -143,6 +150,18 @@ public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student>
         return student;
 
     }
+
+    @Override
+    public List<Student> getStudentsByClass(Integer classId) {
+        QueryWrapper<Student> wrapper =new QueryWrapper<>();
+        wrapper.eq("class_id",classId);
+
+        List<Student> students = this.baseMapper.selectList(wrapper);
+        if (students.isEmpty())
+            throw new BusinessException(ErrorCode.NOT_FOUND_ERROR,"班级id错误或不存在");
+        return students;
+    }
+
 
 }
 

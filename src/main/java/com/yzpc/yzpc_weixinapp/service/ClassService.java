@@ -20,4 +20,6 @@ public interface ClassService extends IService<Class> {
     int deleteClassByTeacherId(Integer teacherId);
 
     List<Class> findClassesByTeacherId(Integer id);
+
+    List<Class> findClassesByMajorId(Integer id);
 }

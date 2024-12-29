@@ -25,7 +25,7 @@ public class Result{
     }
 
     public static Result success(){
-        return new Result(0,null,"成功");
+        return new Result(1,null,"成功");
     }
 
     public static Result success(Object data){
@@ -37,6 +37,9 @@ public class Result{
 
     public static Result error(int errorCode, String msg) {
         return new Result(errorCode,null,msg);
+    }
+    public static Result error(ErrorCode errorCode, String msg) {
+        return new Result(errorCode.getCode(),null,msg);
     }
 
     @Override

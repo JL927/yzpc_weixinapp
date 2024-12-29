@@ -61,5 +61,13 @@ public class ClassController {
         return Result.success(classes);
     }
 
+    @GetMapping("/class/getByMajorId")
+    public Result getByMajorId(@RequestParam(name = "majorId") Integer id){
+        List<Class> classes = classService.findClassesByMajorId(id);
+        return Result.success(classes);
+    }
+
+
+
 }
 

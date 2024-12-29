@@ -16,7 +16,11 @@ public interface ApplicationService extends IService<Application> {
 
     List<Application> getApplicationsById(Integer studentId);
 
+    Application getApplicationsByOwnId(Long applicationId);
+
     List<Application> getApplicationsByStatus(Integer status);
 
     void changeApplication(Application application);
+
+    int delete(Long id);
 }

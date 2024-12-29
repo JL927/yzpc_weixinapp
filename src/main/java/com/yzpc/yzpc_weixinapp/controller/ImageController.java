@@ -102,7 +102,7 @@ public class ImageController {
             cosManager.deleteObject(key);
         } catch (Exception e){
             log.error("file upload error");
-            return Result.error(ErrorCode.OPERATION_ERROR.getCode(),"删除失败");
+            return Result.error(ErrorCode.OPERATION_ERROR,"删除失败");
         }
 
         return Result.success();

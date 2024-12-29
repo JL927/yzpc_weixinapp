@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.yzpc.yzpc_weixinapp.entity.Application;
+import com.yzpc.yzpc_weixinapp.entity.Student;
 import com.yzpc.yzpc_weixinapp.exception.BusinessException;
 import com.yzpc.yzpc_weixinapp.exception.ErrorCode;
 import com.yzpc.yzpc_weixinapp.service.ApplicationService;
@@ -38,6 +39,15 @@ public class ApplicationServiceImpl extends ServiceImpl<ApplicationMapper, Appli
     }
 
     @Override
+    public Application getApplicationsByOwnId(Long applicationId) {
+        QueryWrapper<Application> wrapper =new QueryWrapper<>();
+        wrapper.eq("id",applicationId);
+
+        Application application = this.baseMapper.selectOne(wrapper);
+        return application;
+    }
+
+    @Override
     public List<Application> getApplicationsByStatus(Integer status) {
         QueryWrapper<Application> wrapper =new QueryWrapper<>();
         wrapper.eq("status",status);
@@ -57,6 +67,7 @@ public class ApplicationServiceImpl extends ServiceImpl<ApplicationMapper, Appli
                 updateWrapper.set("description", application.getDescription());
                 updateWrapper.set("score", application.getScore());
                 updateWrapper.set("name", application.getName());
+                updateWrapper.set("application_type",application.getApplicationType());
                 // 使用条件构造器进行更新
                 this.baseMapper.update(null, updateWrapper);
             } else {
@@ -66,6 +77,14 @@ public class ApplicationServiceImpl extends ServiceImpl<ApplicationMapper, Appli
         }else {
             throw new BusinessException(ErrorCode.PARAMS_ERROR,"请求参数为空");
         }
+    }
+
+    @Override
+    public int delete(Long id) {
+        QueryWrapper<Application> wrapper =new QueryWrapper<>();
+        wrapper.eq("id",id);
+
+        return this.baseMapper.delete(wrapper);
     }
 }
 

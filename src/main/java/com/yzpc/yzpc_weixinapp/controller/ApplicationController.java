@@ -85,12 +85,13 @@ public class ApplicationController {
             return Result.error("请求种类错误");
         if(!Arrays.asList(0,1,2,3,4).contains(application.getStatus()))
             return Result.error("申请状态错误");
+        Integer originStatus = applicationService.getApplicationsByOwnId(application.getId()).getStatus();
 
 
         applicationService.changeApplication(application);
 
-        //最终审核完成，添加分数
-        if(application.getStatus()==4){
+        //最终审核完成，添加分数同时预防重复添加
+        if(!originStatus.equals(application.getStatus()) && application.getStatus()==4){
             String applicationType = application.getApplicationType();
             Integer score = application.getScore();
             Long studentId = application.getStudentId();
@@ -118,4 +119,11 @@ public class ApplicationController {
 
         return Result.success();
     }
+
+    public Result delete(@RequestParam(name = "id") Long id){
+        int changes = applicationService.delete(id);
+
+        return Result.success(String.format("删除%d个数据",changes));
+    }
+
 }
