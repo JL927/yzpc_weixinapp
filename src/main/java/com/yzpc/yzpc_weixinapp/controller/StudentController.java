@@ -11,6 +11,7 @@ import com.yzpc.yzpc_weixinapp.utils.JWTUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -65,7 +66,13 @@ public class StudentController {
     public Result getStudentsByClass(@RequestParam(name = "classId") Integer classId){
         List<Student> students = studentService.getStudentsByClass(classId);
 
-        return Result.success(students);
+        List<StudentLogin> studentsV0 = new ArrayList<>();
+
+        for (Student student:students){
+            studentsV0.add(StudentLogin.getStudentV0(student,null));
+        }
+
+        return Result.success(studentsV0);
     }
 
     /**
@@ -77,7 +84,14 @@ public class StudentController {
         List<Student> students = studentService.list();
         if (students.isEmpty())
             return Result.error(ErrorCode.NOT_FOUND_ERROR,"数据不存在");
-        return Result.success(students);
+
+        List<StudentLogin> studentsV0 = new ArrayList<>();
+
+        for (Student student:students){
+            studentsV0.add(StudentLogin.getStudentV0(student,null));
+        }
+
+        return Result.success(studentsV0);
 
     }
 
@@ -93,6 +107,34 @@ public class StudentController {
             sum += studentService.updateSatisfied(id);
 
         return Result.success("成功修改"+sum+"条数据");
+    }
+
+    @PostMapping("/student/changePassword")
+    public Result changePassword(@RequestBody String username,
+                                 @RequestBody String oldPassword,
+                                 @RequestBody String newPassword){
+
+        int i = studentService.changePassword(username,oldPassword,newPassword);
+        return Result.success("成功修改"+i+"条数据");
+
+    }
+
+    /**
+     * 将一批学生的班级修改
+     * @param studentIds 学生id
+     * @param classId 班级id
+     * @return
+     */
+    @PutMapping("/student/changeClass")
+    public Result changeClass(@RequestBody List<Long> studentIds,
+                              @RequestBody Integer classId){
+
+        int sum = 0;
+        for (Long id:studentIds)
+            sum += studentService.changeClass(id,classId);
+
+        return Result.success("成功修改"+sum+"条数据");
+
     }
 
 

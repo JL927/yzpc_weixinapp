@@ -33,39 +33,38 @@ public class ImageController {
 
 
     /**
-     * 图片批量上传
+     * 图片上传
      * 输入图片数据，存储路径
-     * @param multipartFiles 多张图片
+     * @param multipartFile 图片
      * @return
      */
     @PostMapping("/img/upload")  //  " /img/upload?path=1  "
-    public Result uploadImg(@RequestPart("file") List<MultipartFile> multipartFiles,
-                                 @RequestParam(name = "path") String path) {
+    public Result uploadImg(@RequestPart("file") MultipartFile multipartFile,
+                            @RequestParam(name = "path") String path) {
 
-        for(MultipartFile multipartFile: multipartFiles){
-            // 文件目录
-            String filename = multipartFile.getOriginalFilename();
-            String filepath = String.format("/%s/%s", path,filename);
-            File file = null;
-            try {
-                // 上传文件
-                file = File.createTempFile(filepath, null);
-                multipartFile.transferTo(file);
-                cosManager.putObject(filepath, file);
-            } catch (Exception e) {
-                log.error("file upload error, filepath = " + filepath, e);
-//                return Result.error(filename+"图片上传失败");
-            } finally {
-                if (file != null) {
-                    // 删除临时文件
-                    boolean delete = file.delete();
-                    if (!delete) {
-                        log.error("file delete error, filepath = {}", filepath);
-                    }
+        // 文件目录
+        String filename = multipartFile.getOriginalFilename();
+        String filepath = String.format("/%s/%s", path,filename);
+        File file = null;
+        try {
+            // 上传文件
+            file = File.createTempFile(filepath, null);
+            multipartFile.transferTo(file);
+            cosManager.putObject(filepath, file);
+        } catch (Exception e) {
+            log.error("file upload error, filepath = " + filepath, e);
+        // return Result.error(filename+"图片上传失败");
+        } finally {
+            if (file != null) {
+                // 删除临时文件
+                boolean delete = file.delete();
+                if (!delete) {
+                    log.error("file delete error, filepath = {}", filepath);
                 }
             }
-
         }
+
+
 
         return Result.success();
 

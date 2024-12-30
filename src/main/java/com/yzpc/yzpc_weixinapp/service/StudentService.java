@@ -27,4 +27,9 @@ public interface StudentService extends IService<Student> {
 
     List<Student> getStudentsByClass(Integer classId);
 
+    int changePassword(String username, String oldPassword,String newPassword);
+
+    int changeClass(Long id, Integer classId);
+
+    List<Long> getStudentsIdByTeacherId(int id);
 }

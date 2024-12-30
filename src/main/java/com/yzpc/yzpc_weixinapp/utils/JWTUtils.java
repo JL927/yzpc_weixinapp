@@ -4,6 +4,7 @@ import com.yzpc.yzpc_weixinapp.entity.enums.Role;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 
 import javax.crypto.KeyGenerator;
 import javax.crypto.SecretKey;
@@ -30,7 +31,7 @@ public class JWTUtils {
         }
     }
 
-    private static final Long expire = 30 * 24 * 3600 * 1000L;
+    private static final Long expire  = 30 * 24 * 3600 * 1000L ;
 
 
     public static String generateJWT(HashMap<String, Object> claims){

@@ -63,7 +63,7 @@ public class ClassServiceImpl extends ServiceImpl<ClassMapper, Class>
     @Override
     public List<Class> findClassesByMajorId(Integer majorId) {
         QueryWrapper<Class> wrapper = new QueryWrapper<>();
-        wrapper.eq("major_id",majorId);
+        wrapper.eq("major_id",majorId );
         List<Class> classes = this.baseMapper.selectList(wrapper);
         if (classes.isEmpty())
             throw new BusinessException(ErrorCode.NOT_FOUND_ERROR,"专业id错误或不存在此专业的班级");

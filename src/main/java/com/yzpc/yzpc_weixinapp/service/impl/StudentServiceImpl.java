@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
 * @author wq
@@ -160,6 +161,42 @@ public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student>
         if (students.isEmpty())
             throw new BusinessException(ErrorCode.NOT_FOUND_ERROR,"班级id错误或不存在");
         return students;
+    }
+
+    @Override
+    public int changePassword(String username, String oldPassword , String newPassword) {
+        login(username,oldPassword);
+
+        UpdateWrapper<Student> updateWrapper = new UpdateWrapper<>();
+        updateWrapper.eq("username",username);
+        updateWrapper.set("password",newPassword);
+
+        int update = this.baseMapper.update(updateWrapper);
+
+        return update;
+    }
+
+    @Override
+    public int changeClass(Long id, Integer classId) {
+        UpdateWrapper<Student> updateWrapper = new UpdateWrapper<>();
+        updateWrapper.eq("id",id);
+        updateWrapper.set("class_id",classId);
+
+        int update = this.baseMapper.update(updateWrapper);
+
+        return update;
+    }
+
+    @Override
+    public List<Long> getStudentsIdByTeacherId(int teacherId) {
+        QueryWrapper<Student> wrapper = new QueryWrapper<>();
+        wrapper.select("id");
+        wrapper.eq("teacher_id",teacherId);
+        //查询实体返回id列表
+        return this.baseMapper.selectObjs(wrapper)
+                .stream()
+                .map(id -> (Long) id)
+                .collect(Collectors.toList());
     }
 
 

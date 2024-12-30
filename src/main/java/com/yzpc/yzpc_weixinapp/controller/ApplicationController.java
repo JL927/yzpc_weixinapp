@@ -120,6 +120,7 @@ public class ApplicationController {
         return Result.success();
     }
 
+    @DeleteMapping("/application/delete")
     public Result delete(@RequestParam(name = "id") Long id){
         int changes = applicationService.delete(id);
 

@@ -1,6 +1,7 @@
 package com.yzpc.yzpc_weixinapp.config;
 
 import com.yzpc.yzpc_weixinapp.interceptor.LoginCheckInterceptor;
+import com.yzpc.yzpc_weixinapp.interceptor.RoleCheckInterceptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Configuration;
@@ -18,8 +19,11 @@ import javax.annotation.Resource;
 public class WebConfig implements WebMvcConfigurer {
     @Resource
     LoginCheckInterceptor loginCheckInterceptor;
+    @Resource
+    RoleCheckInterceptor roleCheckInterceptor;
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(loginCheckInterceptor).addPathPatterns("/**").excludePathPatterns("/**/login","/api/doc.html");
+        registry.addInterceptor(roleCheckInterceptor).addPathPatterns("/class/**").excludePathPatterns("/**/login","/api/doc.html");
     }
 }

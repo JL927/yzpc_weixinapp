@@ -4,16 +4,19 @@ import com.yzpc.yzpc_weixinapp.common.Result;
 import com.yzpc.yzpc_weixinapp.entity.Teacher;
 import com.yzpc.yzpc_weixinapp.entity.TeacherLogin;
 import com.yzpc.yzpc_weixinapp.entity.UserLogin;
+import com.yzpc.yzpc_weixinapp.service.ApplicationService;
 import com.yzpc.yzpc_weixinapp.service.ClassService;
 import com.yzpc.yzpc_weixinapp.service.StudentService;
 import com.yzpc.yzpc_weixinapp.service.TeacherService;
 import com.yzpc.yzpc_weixinapp.utils.JWTUtils;
 import io.jsonwebtoken.Claims;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.util.HashMap;
+import java.util.List;
 
 /**
  * @author wq
@@ -32,6 +35,9 @@ public class TeacherController {
 
     @Resource
     public StudentService studentService;
+
+    @Resource
+    public ApplicationService applicationService;
 
     /**
      * 教职工登录，输入账号，密码，职位
@@ -71,12 +77,19 @@ public class TeacherController {
      * @return
      */
     @PostMapping("/teacher/delete")
+    @Transactional
     public Result deleteTeachers(@RequestBody Integer[] ids){
         teacherService.deleteTeachers(ids);
-        //TODO(同时删除教师所属班级和学生和学生图片)
+        //TODO(同时删除教师所属班级和学生和学生图片，学生请求)
         for (int id:ids) {
             int deletes = classService.deleteClassByTeacherId(id);
             log.info("删除教师"+id+"名下"+deletes+"个班级");
+            List<Long> studentsId = studentService.getStudentsIdByTeacherId(id);
+            deletes = 0;
+            for (Long stuId:studentsId){
+                deletes += applicationService.delete(stuId);
+            }
+            log.info("删除教师"+id+"名下"+deletes+"个申请");
             deletes = studentService.deleteStudentsByTeacherId(id);
             log.info("删除教师"+id+"名下"+deletes+"个学生");
         }
