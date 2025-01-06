@@ -23,7 +23,19 @@ public class WebConfig implements WebMvcConfigurer {
     RoleCheckInterceptor roleCheckInterceptor;
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(loginCheckInterceptor).addPathPatterns("/api/**").excludePathPatterns("/api/**/login","/*/doc.html");
-        registry.addInterceptor(roleCheckInterceptor).addPathPatterns("/api/class/**");
+        registry.addInterceptor(loginCheckInterceptor).addPathPatterns("/**").excludePathPatterns(
+                "/**/login",
+                "/doc.html",
+                "/swagger-resources/**", // 排除 Swagger 资源
+                "/v2/api-docs", // 排除 API 文档 JSON 数据
+                "/webjars/**", // 排除 Swagger 的静态资源
+                "/favicon.ico");
+        registry.addInterceptor(roleCheckInterceptor).addPathPatterns("/class/**").excludePathPatterns(
+                "/**/login",
+                "/doc.html",
+                "/swagger-resources/**", // 排除 Swagger 资源
+                "/v2/api-docs", // 排除 API 文档 JSON 数据
+                "/webjars/**", // 排除 Swagger 的静态资源
+                "/favicon.ico");
     }
 }
