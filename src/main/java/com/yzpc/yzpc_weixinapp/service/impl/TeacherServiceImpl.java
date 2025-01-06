@@ -4,6 +4,7 @@ import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.yzpc.yzpc_weixinapp.entity.Teacher;
+import com.yzpc.yzpc_weixinapp.entity.enums.Role;
 import com.yzpc.yzpc_weixinapp.exception.BusinessException;
 import com.yzpc.yzpc_weixinapp.exception.ErrorCode;
 import com.yzpc.yzpc_weixinapp.mapper.TeacherMapper;
@@ -38,6 +39,13 @@ public class TeacherServiceImpl extends ServiceImpl<TeacherMapper,Teacher> imple
 
     @Override
     public void addTeachers(Teacher[] teachers) {
+        for (Teacher teacher : teachers) {
+            if (StrUtil.hasBlank(teacher.getName(),teacher.getUsername(),teacher.getPassword()))
+                throw new BusinessException(ErrorCode.PARAMS_ERROR,"姓名或用户名或密码为空");
+            if (!Role.isRole(teacher.getRole())){
+                throw new BusinessException(ErrorCode.PARAMS_ERROR,"身份信息错误");
+            }
+        }
         this.baseMapper.insert(Arrays.asList(teachers));
     }
 

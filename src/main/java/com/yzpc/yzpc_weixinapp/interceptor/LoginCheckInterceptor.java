@@ -28,7 +28,7 @@ public class LoginCheckInterceptor implements HandlerInterceptor {
 
         try {
 
-//            Claims claims = JWTUtils.parseJWT(token);
+            Claims claims = JWTUtils.parseJWT(token);
 
         }catch (SignatureException se) {
             msg = "密钥错误";

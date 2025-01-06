@@ -1,9 +1,11 @@
 package com.yzpc.yzpc_weixinapp.controller;
 
 import com.yzpc.yzpc_weixinapp.common.Result;
+import com.yzpc.yzpc_weixinapp.entity.Class;
 import com.yzpc.yzpc_weixinapp.entity.Teacher;
 import com.yzpc.yzpc_weixinapp.entity.TeacherLogin;
 import com.yzpc.yzpc_weixinapp.entity.UserLogin;
+import com.yzpc.yzpc_weixinapp.manager.CosManager;
 import com.yzpc.yzpc_weixinapp.service.ApplicationService;
 import com.yzpc.yzpc_weixinapp.service.ClassService;
 import com.yzpc.yzpc_weixinapp.service.StudentService;
@@ -38,6 +40,9 @@ public class TeacherController {
 
     @Resource
     public ApplicationService applicationService;
+
+    @Resource
+    public CosManager cosManager;
 
     /**
      * 教职工登录，输入账号，密码，职位
@@ -80,8 +85,21 @@ public class TeacherController {
     @Transactional
     public Result deleteTeachers(@RequestBody Integer[] ids){
         teacherService.deleteTeachers(ids);
-        //TODO(同时删除教师所属班级和学生和学生图片，学生请求)
+        //同时删除教师所属班级和学生和学生图片，学生请求
         for (int id:ids) {
+            List<Class> classes = classService.findClassesByTeacherId(id);
+            for (Class cls:classes){
+                Integer majorId = cls.getMajorId();
+                Integer classId = cls.getId();
+                String prefix = String.format("%d/%d/", majorId, classId);
+                List<String> keys = cosManager.listAllImagesInFolder(prefix);
+
+                try {
+                    cosManager.deleteObjects(keys);
+                } catch (Exception e){
+                    log.error("file delete error");
+                }
+            }
             int deletes = classService.deleteClassByTeacherId(id);
             log.info("删除教师"+id+"名下"+deletes+"个班级");
             List<Long> studentsId = studentService.getStudentsIdByTeacherId(id);
