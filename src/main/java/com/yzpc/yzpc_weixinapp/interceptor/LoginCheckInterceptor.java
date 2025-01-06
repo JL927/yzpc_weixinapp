@@ -22,6 +22,11 @@ public class LoginCheckInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         log.info("登录校验");
+        String requestUri = request.getRequestURI();
+        System.out.println("拦截器处理请求: " + requestUri);
+        if (requestUri.contains("/api/doc.html")) {
+            System.out.println("本应排除的/api/doc.html被拦截");
+        }
 
         String msg = null;
         String token = request.getHeader("token");

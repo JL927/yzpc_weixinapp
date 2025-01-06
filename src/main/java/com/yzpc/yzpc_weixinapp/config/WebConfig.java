@@ -23,7 +23,7 @@ public class WebConfig implements WebMvcConfigurer {
     RoleCheckInterceptor roleCheckInterceptor;
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(loginCheckInterceptor).addPathPatterns("/**").excludePathPatterns("/**/login","/api/doc.html");
-        registry.addInterceptor(roleCheckInterceptor).addPathPatterns("/class/**").excludePathPatterns("/**/login","/api/doc.html");
+        registry.addInterceptor(loginCheckInterceptor).addPathPatterns("/api/**").excludePathPatterns("/api/**/login","/*/doc.html");
+        registry.addInterceptor(roleCheckInterceptor).addPathPatterns("/api/class/**");
     }
 }
