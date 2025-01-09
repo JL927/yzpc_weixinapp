@@ -77,7 +77,7 @@ public class CosManager {
         // 遍历对象列表，筛选出图片文件（根据后缀判断）并添加到结果列表中
         for (COSObjectSummary objectSummary : objectSummaries) {
             String key = objectSummary.getKey();
-            if (key.endsWith(".jpg") || key.endsWith(".png") || key.endsWith(".jpeg")) {
+            if (key.endsWith(".jpg") || key.endsWith(".png") || key.endsWith(".jpeg") || key.endsWith(".webp")) {
                 imageList.add(key);
             }
         }

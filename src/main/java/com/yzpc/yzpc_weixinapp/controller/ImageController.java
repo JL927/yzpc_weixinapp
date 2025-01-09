@@ -6,6 +6,7 @@ import com.yzpc.yzpc_weixinapp.config.CosClientConfig;
 import com.yzpc.yzpc_weixinapp.exception.ErrorCode;
 import com.yzpc.yzpc_weixinapp.manager.CosManager;
 import com.yzpc.yzpc_weixinapp.service.ImagesService;
+import com.yzpc.yzpc_weixinapp.utils.ImageCompressUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -40,24 +41,25 @@ public class ImageController {
      */
     @PostMapping("/img/upload")  //  " /img/upload?path=1  "
     public Result uploadImg(@RequestPart("file") MultipartFile multipartFile,
-                            @RequestParam(name = "path") String path) {
+                            @RequestParam(name = "path") String path,
+                            @RequestParam(name = "quality", defaultValue = "0.8") float quality) {
 
         // 文件目录
         String filename = multipartFile.getOriginalFilename();
-        String filepath = String.format("/%s/%s", path,filename);
-        File file = null;
+        //将文件扩展名改为 .webp
+        String filepath = String.format("/%s/%s", path, filename.replaceAll("\\.[^.]+$", ".webp"));
+        File compressedFile = null;
         try {
             // 上传文件
-            file = File.createTempFile(filepath, null);
-            multipartFile.transferTo(file);
-            cosManager.putObject(filepath, file);
+            compressedFile = ImageCompressUtils.compressToWebP(multipartFile, quality);
+            cosManager.putObject(filepath, compressedFile);
         } catch (Exception e) {
             log.error("file upload error, filepath = " + filepath, e);
         // return Result.error(filename+"图片上传失败");
         } finally {
-            if (file != null) {
+            if (compressedFile != null) {
                 // 删除临时文件
-                boolean delete = file.delete();
+                boolean delete = compressedFile.delete();
                 if (!delete) {
                     log.error("file delete error, filepath = {}", filepath);
                 }

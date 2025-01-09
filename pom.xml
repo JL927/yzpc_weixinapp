@@ -55,13 +55,13 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-configuration-processor</artifactId>
         </dependency>
-<!--        JWT令牌-->
+        <!-- JWT令牌-->
         <dependency>
             <groupId>io.jsonwebtoken</groupId>
             <artifactId>jjwt</artifactId>
             <version>0.12.3</version>
         </dependency>
-<!--        腾讯云-->
+
         <!-- 腾讯云 cos 服务 -->
         <dependency>
             <groupId>com.qcloud</groupId>
@@ -69,7 +69,21 @@
             <version>5.6.227</version>
         </dependency>
 
+        <dependency>
+            <groupId>org.sejda.imageio</groupId>
+            <artifactId>webp-imageio</artifactId>
+            <version>0.1.6</version>
+        </dependency>
+
     </dependencies>
+
+<!--    <repositories>-->
+<!--        <repository>-->
+<!--            <id>jitpack.io</id>-->
+<!--            <url>https://jitpack.io</url>-->
+<!--        </repository>-->
+<!--    </repositories>-->
+
     <dependencyManagement>
         <dependencies>
             <dependency>

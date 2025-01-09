@@ -41,27 +41,27 @@ public class RoleCheckInterceptor implements HandlerInterceptor {
         }catch (SignatureException se) {
             msg = "密钥错误";
             log.info(msg);
-            return false;
+            throw new BusinessException(ErrorCode.PARAMS_ERROR,msg);
         }catch (MalformedJwtException me) {
 
             msg = "密钥算法或者密钥转换错误";
             log.info(msg);
-            return false;
+            throw new BusinessException(ErrorCode.PARAMS_ERROR,msg);
         }catch (MissingClaimException mce) {
 
             msg = "密钥缺少校验数据";
             log.info(msg);
-            return false;
+            throw new BusinessException(ErrorCode.PARAMS_ERROR,msg);
         }catch (ExpiredJwtException mce) {
 
             msg = "密钥已过期";
             log.info(msg);
-            return false;
+            throw new BusinessException(ErrorCode.PARAMS_ERROR,msg);
         }catch (JwtException jwte) {
 
             msg = "密钥解析错误";
             log.info(msg);
-            return false;
+            throw new BusinessException(ErrorCode.PARAMS_ERROR,msg);
         }
 
 

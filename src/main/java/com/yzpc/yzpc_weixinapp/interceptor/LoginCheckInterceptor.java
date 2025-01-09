@@ -1,5 +1,7 @@
 package com.yzpc.yzpc_weixinapp.interceptor;
 
+import com.yzpc.yzpc_weixinapp.exception.BusinessException;
+import com.yzpc.yzpc_weixinapp.exception.ErrorCode;
 import com.yzpc.yzpc_weixinapp.utils.JWTUtils;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.SignatureException;
@@ -35,26 +37,27 @@ public class LoginCheckInterceptor implements HandlerInterceptor {
         }catch (SignatureException se) {
             msg = "密钥错误";
             log.info(msg);
-            return false;
+            throw new BusinessException(ErrorCode.PARAMS_ERROR,msg);
+//            return false;
         }catch (MalformedJwtException me) {
             msg = "密钥算法或者密钥转换错误";
             log.info(msg);
-            return false;
+            throw new BusinessException(ErrorCode.PARAMS_ERROR,msg);
         }catch (MissingClaimException mce) {
 
             msg = "密钥缺少校验数据";
             log.info(msg);
-            return false;
+            throw new BusinessException(ErrorCode.PARAMS_ERROR,msg);
         }catch (ExpiredJwtException mce) {
 
             msg = "密钥已过期";
             log.info(msg);
-            return false;
+            throw new BusinessException(ErrorCode.PARAMS_ERROR,msg);
         }catch (JwtException jwte) {
 
             msg = "密钥解析错误";
             log.info(msg);
-            return false;
+            throw new BusinessException(ErrorCode.PARAMS_ERROR,msg);
         }
 
 

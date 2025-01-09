@@ -1,5 +1,6 @@
 package com.yzpc.yzpc_weixinapp;
 
+import com.luciad.imageio.webp.WebPEncoderOptions;
 import com.yzpc.yzpc_weixinapp.entity.Teacher;
 import com.yzpc.yzpc_weixinapp.entity.enums.Role;
 import com.yzpc.yzpc_weixinapp.utils.JWTUtils;
@@ -8,8 +9,11 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.junit.jupiter.api.Test;
 
+import javax.imageio.ImageIO;
+import javax.imageio.ImageWriter;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
 
 /**
  * @author wq
@@ -38,7 +42,12 @@ public class CommonTest {
 
     @Test
     public void testRole(){
-        System.out.println(Role.isRole("dean"));
-
+//        System.out.println(Role.isRole("dean"));
+        Iterator<ImageWriter> writers = ImageIO.getImageWritersByMIMEType("image/webp");
+        if (!writers.hasNext()) {
+            System.err.println("No WebP ImageWriter found!");
+        } else {
+            System.out.println("WebP ImageWriter found!");
+        };
     }
 }
