@@ -199,6 +199,15 @@ public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student>
                 .collect(Collectors.toList());
     }
 
+    @Override
+    public Student getStudentById(Long studentId) {
+
+        QueryWrapper<Student> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("id",studentId);
+        Student student = this.baseMapper.selectOne(queryWrapper);
+        return student;
+    }
+
 
 }
 

@@ -22,8 +22,8 @@ public class LoginCheckInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         log.info("登录校验");
-        String requestUri = request.getRequestURI();
-        System.out.println("拦截器处理请求: " + requestUri);
+//        String requestUri = request.getRequestURI();
+//        System.out.println("拦截器处理请求: " + requestUri);
 
         String msg = null;
         String token = request.getHeader("token");
@@ -37,7 +37,6 @@ public class LoginCheckInterceptor implements HandlerInterceptor {
             log.info(msg);
             return false;
         }catch (MalformedJwtException me) {
-
             msg = "密钥算法或者密钥转换错误";
             log.info(msg);
             return false;

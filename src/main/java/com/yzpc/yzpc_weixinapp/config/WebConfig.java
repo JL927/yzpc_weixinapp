@@ -30,7 +30,12 @@ public class WebConfig implements WebMvcConfigurer {
                 "/v2/api-docs", // 排除 API 文档 JSON 数据
                 "/webjars/**", // 排除 Swagger 的静态资源
                 "/favicon.ico");
-        registry.addInterceptor(roleCheckInterceptor).addPathPatterns("/class/**").excludePathPatterns(
+        registry.addInterceptor(roleCheckInterceptor).addPathPatterns(
+                "/class/**",
+                "/teachers/**",
+                "/student/getAll"
+                )
+                .excludePathPatterns(
                 "/**/login",
                 "/doc.html",
                 "/swagger-resources/**", // 排除 Swagger 资源

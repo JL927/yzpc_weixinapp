@@ -14,7 +14,7 @@ public interface ApplicationService extends IService<Application> {
 
     void addApplication(Application application);
 
-    List<Application> getApplicationsById(Integer studentId);
+    List<Application> getApplicationsById(Long studentId);
 
     Application getApplicationsByOwnId(Long applicationId);
 

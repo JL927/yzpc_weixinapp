@@ -32,4 +32,6 @@ public interface StudentService extends IService<Student> {
     int changeClass(Long id, Integer classId);
 
     List<Long> getStudentsIdByTeacherId(int id);
+
+    Student getStudentById(Long studentId);
 }

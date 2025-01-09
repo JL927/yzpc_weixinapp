@@ -50,7 +50,7 @@ public class ApplicationController {
 
     }
     @GetMapping("/application/getById") // ' /application/getById?studentId=1 '
-    public Result getApplicationsById(@RequestParam(name = "studentId") Integer studentId){
+    public Result getApplicationsById(@RequestParam(name = "studentId") Long studentId){
         List<Application> applications = applicationService.getApplicationsById(studentId);
         return Result.success(applications);
     }

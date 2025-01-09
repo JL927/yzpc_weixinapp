@@ -29,7 +29,7 @@ public class ApplicationServiceImpl extends ServiceImpl<ApplicationMapper, Appli
     }
 
     @Override
-    public List<Application> getApplicationsById(Integer studentId) {
+    public List<Application> getApplicationsById(Long studentId) {
 
         QueryWrapper<Application> wrapper =new QueryWrapper<>();
         wrapper.eq("student_id",studentId);

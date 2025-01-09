@@ -94,6 +94,13 @@ public class StudentController {
         return Result.success(studentsV0);
 
     }
+    @GetMapping("/student/getById")
+    public Result getStudentById(@RequestParam(name = "studentId") Long studentId){
+        Student student = studentService.getStudentById(studentId);
+        if (student == null)
+            return Result.error(ErrorCode.NOT_FOUND_ERROR,"不存在此id学生");
+        return Result.success();
+    }
 
     /**
      * 检查学生成绩是否达标，需要手动调用此接口才会更新满足字段
