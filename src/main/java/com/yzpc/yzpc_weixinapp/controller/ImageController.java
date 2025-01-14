@@ -54,7 +54,7 @@ public class ImageController {
             // 上传文件
 //            compressedFile = ImageCompressUtils.compressToWebP(multipartFile, quality);
 
-            compressedFile = File.createTempFile(filename,null);
+            compressedFile = File.createTempFile(filepath,null);
             multipartFile.transferTo(compressedFile);
 
 
