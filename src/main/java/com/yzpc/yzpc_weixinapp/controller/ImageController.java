@@ -47,11 +47,17 @@ public class ImageController {
         // 文件目录
         String filename = multipartFile.getOriginalFilename();
         //将文件扩展名改为 .webp
-        String filepath = String.format("/%s/%s", path, filename.replaceAll("\\.[^.]+$", ".webp"));
+//        String filepath = String.format("/%s/%s", path, filename.replaceAll("\\.[^.]+$", ".webp"));
+        String filepath = String.format("%s/%s", path, filename);
         File compressedFile = null;
         try {
             // 上传文件
-            compressedFile = ImageCompressUtils.compressToWebP(multipartFile, quality);
+//            compressedFile = ImageCompressUtils.compressToWebP(multipartFile, quality);
+
+            compressedFile = File.createTempFile(filename,null);
+            multipartFile.transferTo(compressedFile);
+
+
             cosManager.putObject(filepath, compressedFile);
         } catch (Exception e) {
             log.error("file upload error, filepath = " + filepath, e);
