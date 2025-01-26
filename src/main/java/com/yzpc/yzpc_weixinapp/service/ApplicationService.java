@@ -2,6 +2,7 @@ package com.yzpc.yzpc_weixinapp.service;
 
 import com.yzpc.yzpc_weixinapp.entity.Application;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.yzpc.yzpc_weixinapp.entity.StatusList;
 
 import java.util.List;
 
@@ -23,4 +24,7 @@ public interface ApplicationService extends IService<Application> {
     void changeApplication(Application application);
 
     int delete(Long id);
+
+    int changeApplicationList(StatusList statusList);
+
 }

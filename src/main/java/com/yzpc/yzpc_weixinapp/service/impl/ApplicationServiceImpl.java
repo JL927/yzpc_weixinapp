@@ -4,7 +4,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.yzpc.yzpc_weixinapp.entity.Application;
-import com.yzpc.yzpc_weixinapp.entity.Student;
+import com.yzpc.yzpc_weixinapp.entity.StatusList;
 import com.yzpc.yzpc_weixinapp.exception.BusinessException;
 import com.yzpc.yzpc_weixinapp.exception.ErrorCode;
 import com.yzpc.yzpc_weixinapp.service.ApplicationService;
@@ -86,6 +86,22 @@ public class ApplicationServiceImpl extends ServiceImpl<ApplicationMapper, Appli
 
         return this.baseMapper.delete(wrapper);
     }
+
+    @Override
+    public int changeApplicationList(StatusList statusList) {
+        Long[] ids = statusList.getIds();
+        int update = 0;
+        for (Long id : ids) {
+            UpdateWrapper<Application> updateWrapper = new UpdateWrapper<>();
+            updateWrapper.eq("id",id);
+            updateWrapper.set("status",statusList.getStatusTo());
+
+            update += this.baseMapper.update(updateWrapper);
+
+        }
+        return update;
+    }
+
 }
 
 

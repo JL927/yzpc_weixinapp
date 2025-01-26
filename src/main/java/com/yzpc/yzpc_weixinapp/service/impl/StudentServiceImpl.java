@@ -97,6 +97,14 @@ public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student>
         Integer skillScore = student.getSkillScore();
         Integer computerScore = student.getComputerScore();
         Integer totalScore = student.getTotalScore();
+        if (!totalScore.equals(chineseScore+englishScore+skillScore+computerScore)){
+            totalScore = chineseScore+englishScore+skillScore+computerScore;
+            UpdateWrapper<Student> updateWrapper =new UpdateWrapper<>();
+            updateWrapper.eq("id",studentId);
+            updateWrapper.set("total_score",totalScore);
+            System.out.println("总分有偏差，已进行修改");
+            this.baseMapper.update(updateWrapper);
+        }
         Integer satisfiedV0 = student.getSatisfied();
 
         int satisfied = 0;

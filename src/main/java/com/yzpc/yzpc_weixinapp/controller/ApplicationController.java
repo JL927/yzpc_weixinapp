@@ -1,7 +1,10 @@
 package com.yzpc.yzpc_weixinapp.controller;
 
+import cn.hutool.core.util.StrUtil;
+import com.qcloud.cos.utils.StringUtils;
 import com.yzpc.yzpc_weixinapp.common.Result;
 import com.yzpc.yzpc_weixinapp.entity.Application;
+import com.yzpc.yzpc_weixinapp.entity.StatusList;
 import com.yzpc.yzpc_weixinapp.entity.enums.ApplicationTypes;
 import com.yzpc.yzpc_weixinapp.service.ApplicationService;
 import com.yzpc.yzpc_weixinapp.service.StudentService;
@@ -9,9 +12,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 /**
  * @author wq
@@ -64,6 +65,67 @@ public class ApplicationController {
     public Result getApplicationByStatus(@RequestParam(name = "status") Integer status){
         List<Application> applications = applicationService.getApplicationsByStatus(status);
         return Result.success(applications);
+    }
+
+    /**
+     * 一键修改请求状态，输入请求id列表，目标状态
+      * @param statusList
+     * @return
+     */
+    @PostMapping("/application/changeStatusList")
+    public Result changeStatusList(@RequestBody StatusList statusList){
+        if (statusList.getStatusTo() == null || statusList.getIds().length == 0){
+            return Result.error("请求参数错误");
+        }
+        Integer statusTo = statusList.getStatusTo();
+
+        if(!Arrays.asList(0,3,4).contains(statusTo)) {
+            return Result.error("目标状态错误");
+        }
+
+        Map<Long,Application> idMap = new HashMap<>();
+        for (Long id : statusList.getIds()) {
+            Application application = applicationService.getApplicationsByOwnId(id);
+            if (application != null) {
+                idMap.put(id, application);
+            }
+        }
+
+        int i = applicationService.changeApplicationList(statusList);
+
+        idMap.forEach((id,application)->{
+            //最终审核完成，添加分数同时预防重复添加
+            if(!statusTo.equals(application.getStatus()) && statusTo ==4){
+                String applicationType = application.getApplicationType();
+                Integer score = application.getScore();
+                Long studentId = application.getStudentId();
+                int changes=0;
+                switch (ApplicationTypes.fromValue(applicationType)){
+                    case SKILL:
+                        changes=studentService.updateScore(studentId,"skill_score",score);
+                        break;
+                    case CHINESE:
+                        changes=studentService.updateScore(studentId,"chinese_score",score);
+                        break;
+                    case ENGLISH:
+                        changes=studentService.updateScore(studentId,"english_score",score);
+                        break;
+                    case COMPUTER:
+                        changes=studentService.updateScore(studentId,"computer_score",score);
+                        break;
+                    default:
+                        log.info("添加分数种类出错");
+                }
+                int changes2=studentService.updateTotalScore(studentId);
+                log.info("修改"+changes+"行分数和"+changes2+"行总分。");
+
+            }
+        });
+
+
+
+        return Result.success(String.format("修改%d个数据",i));
+
     }
 
     /**

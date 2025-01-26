@@ -1,5 +1,6 @@
 package com.yzpc.yzpc_weixinapp.config;
 
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import org.springframework.boot.autoconfigure.jackson.Jackson2ObjectMapperBuilderCustomizer;
@@ -20,6 +21,7 @@ public class JacksonConfig {
             builder.featuresToDisable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
             builder.serializerByType(Long.class, new ToStringSerializer());
             builder.serializerByType(long.class, new ToStringSerializer());
+            builder.featuresToEnable(DeserializationFeature.USE_LONG_FOR_INTS);
         };
     }
 }
