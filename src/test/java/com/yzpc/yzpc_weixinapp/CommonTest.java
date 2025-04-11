@@ -7,6 +7,8 @@ import com.yzpc.yzpc_weixinapp.utils.JWTUtils;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import javax.imageio.ImageIO;
@@ -21,7 +23,26 @@ import java.util.Iterator;
  * @date 2024/12/20 12:49:07
  */
 public class CommonTest {
-
+//    private Jedis jedis;
+//
+//    @BeforeEach
+//    public void init(){
+//        jedis=new Jedis("192.168.56.101",6379);
+//        jedis.auth("root");
+//        jedis.select(0);
+//    }
+//
+//    @Test
+//    public void testJedis(){
+//        jedis.set("name","wq");
+//        System.out.println(jedis.get("name"));
+//    }
+//
+//    @AfterEach
+//    public void end(){
+//        if(jedis!=null)
+//            jedis.close();
+//    }
     @Test
     public void testJWT(){
 

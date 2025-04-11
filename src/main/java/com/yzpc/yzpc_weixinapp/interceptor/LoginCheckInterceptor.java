@@ -6,12 +6,15 @@ import com.yzpc.yzpc_weixinapp.utils.JWTUtils;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.SignatureException;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author wq
@@ -21,6 +24,8 @@ import javax.servlet.http.HttpServletResponse;
 @Component
 @Slf4j
 public class LoginCheckInterceptor implements HandlerInterceptor {
+    @Resource
+    public StringRedisTemplate stringRedisTemplate;
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         log.info("登录校验");
@@ -30,9 +35,20 @@ public class LoginCheckInterceptor implements HandlerInterceptor {
         String msg = null;
         String token = request.getHeader("token");
 
+        String role=stringRedisTemplate.opsForValue().get(token);
+        if(role!=null){
+            log.info("登录放行");
+            return true;
+        }
+
         try {
 
             Claims claims = JWTUtils.parseJWT(token);
+            if (claims.containsKey("role")) {
+                String jwt_role = (String) claims.get("role");
+                stringRedisTemplate.opsForValue().set(token,jwt_role,30, TimeUnit.MINUTES);
+            }
+
 
         }catch (SignatureException se) {
             msg = "密钥错误";

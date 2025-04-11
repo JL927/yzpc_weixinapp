@@ -24,12 +24,12 @@ public class WebConfig implements WebMvcConfigurer {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(loginCheckInterceptor).addPathPatterns("/**").excludePathPatterns(
-                "/**/login",
+                "/*/login",
                 "/doc.html",
                 "/swagger-resources/**", // 排除 Swagger 资源
                 "/v2/api-docs", // 排除 API 文档 JSON 数据
                 "/webjars/**", // 排除 Swagger 的静态资源
-                "/favicon.ico");
+                "/favicon.ico").order(0);
         registry.addInterceptor(roleCheckInterceptor).addPathPatterns(
                 "/class/**",
                 "/teachers/**",
@@ -41,6 +41,6 @@ public class WebConfig implements WebMvcConfigurer {
                 "/swagger-resources/**", // 排除 Swagger 资源
                 "/v2/api-docs", // 排除 API 文档 JSON 数据
                 "/webjars/**", // 排除 Swagger 的静态资源
-                "/favicon.ico");
+                "/favicon.ico").order(1);
     }
 }

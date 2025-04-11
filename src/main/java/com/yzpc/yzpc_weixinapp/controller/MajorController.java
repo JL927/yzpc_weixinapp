@@ -23,6 +23,8 @@ public class MajorController {
     public Result getAll(){
         List<Major> list = majorService.list();
 
+
+
         return Result.success(list);
     }
 }

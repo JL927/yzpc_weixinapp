@@ -1,16 +1,20 @@
 package com.yzpc.yzpc_weixinapp.interceptor;
 
+import com.yzpc.yzpc_weixinapp.entity.enums.Role;
 import com.yzpc.yzpc_weixinapp.exception.BusinessException;
 import com.yzpc.yzpc_weixinapp.exception.ErrorCode;
 import com.yzpc.yzpc_weixinapp.utils.JWTUtils;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.SignatureException;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author wq
@@ -21,22 +25,43 @@ import javax.servlet.http.HttpServletResponse;
 @Component
 public class RoleCheckInterceptor implements HandlerInterceptor {
 
+    @Resource
+    public StringRedisTemplate stringRedisTemplate;
+
     @Override
-    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler){
         log.info("身份校验");
 
         String msg = null;
         String token = request.getHeader("token");
 
+        String role=stringRedisTemplate.opsForValue().get(token);
+        if(role!=null){
+            if (Role.isRole(role)){
+                log.info("身份放行");
+                return true;
+            }else{
+                throw new BusinessException(ErrorCode.PARAMS_ERROR,"身份验证失败");
+            }
+
+        }
+
         try {
 
             Claims claims = JWTUtils.parseJWT(token);
-            if (JWTUtils.checkIsTeacher(claims)){
-                log.info("身份放行");
-                return true;
-            }else {
-                throw new BusinessException(ErrorCode.NO_AUTH_ERROR,"权限不足");
+            if (claims.containsKey("role")) {
+                String jwt_role = (String) claims.get("role");
+                if (Role.isRole(jwt_role)){
+                    stringRedisTemplate.opsForValue().set(token,jwt_role,30, TimeUnit.MINUTES);
+                    log.info("身份放行");
+                    return true;
+                }else{
+                    throw new BusinessException(ErrorCode.PARAMS_ERROR,"身份验证失败");
+                }
+            }else{
+                throw new BusinessException(ErrorCode.PARAMS_ERROR,"身份信息丢失");
             }
+
 
         }catch (SignatureException se) {
             msg = "密钥错误";

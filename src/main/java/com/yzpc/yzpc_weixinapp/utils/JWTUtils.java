@@ -33,6 +33,9 @@ public class JWTUtils {
 
     private static final Long expire  = 30 * 24 * 3600 * 1000L ;
 
+    public static final String JWT_LOGIN_VERIFY="jwt:login:verify";
+    public static final String JWT_ROLE_VERIFY="jwt:role:verify";
+
 
     public static String generateJWT(HashMap<String, Object> claims){
 
@@ -57,13 +60,5 @@ public class JWTUtils {
         return claims;
     }
 
-    public static boolean checkIsTeacher(Claims claims){
-        if (claims.containsKey("role")) {
-            String role = (String) claims.get("role");
-            return Role.isRole(role);
-        }
 
-        return false;
-
-    }
 }
